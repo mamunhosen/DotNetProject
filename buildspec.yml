@@ -1,0 +1,18 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      # Install .NET 6 SDK if not available in the build image
+      - wget https://dot.net/v1/dotnet-install.sh
+      - bash dotnet-install.sh --channel 6.0
+  pre_build:
+    commands:
+      - dotnet restore
+  build:
+    commands:
+      - dotnet build --configuration Release
+      - dotnet test
+      - dotnet publish --configuration Release --output ./publish_output
+artifacts:
+  files:
+    - ./publish_output/**/*
